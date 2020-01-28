@@ -1,5 +1,4 @@
 import os
-import sys
 import csv
 import base64
 from io import BytesIO
@@ -8,10 +7,17 @@ import qrcode
 import pdfkit
 from jinja2 import Template
 
+from card_maker import CARD_MAKER_CONFIG, BASE_DIR
+
 data = {
     "name": "Agung Wiyono",
     "kode": "DTN-01001",
     "email": "wiyonoagung1@gmail.com",
+}
+
+TEMPLATE_FOLDER = {
+    "Ikhwan": BASE_DIR + "/card_dauroh_ikhwan",
+    "Akhawat": BASE_DIR + "/card_dauroh_akhwat",
 }
 
 
@@ -23,26 +29,34 @@ def card_creator(member, batch):
     temp_file.seek(0)
     qrcode_text = base64.b64encode(temp_file.getvalue()).decode()
 
-    gender = "ikhwan" if member["gender"] == "Ikhwan" else "akhwat"
-
-    with open(f"card_dauroh_{gender}/index.html", "r") as f:
+    with open(TEMPLATE_FOLDER[member["gender"]] + "/index.html", "r") as f:
         template = Template(f.read())
 
-    new_template = template.render(qrcode=qrcode_text, member=member)
+    new_template = template.render(
+        qrcode=qrcode_text,
+        member=member,
+        path=TEMPLATE_FOLDER[member["gender"]],
+    )
 
     pdfkit.from_string(
-        new_template, f"cards/batch{batch}/{member['kode']}.pdf"
+        new_template,
+        CARD_MAKER_CONFIG["saved_card_folder"]
+        + f"cards/batch{batch}/{member['kode']}.pdf",
     )
 
 
 def path_checker(batch):
-    if not os.path.isdir(f"cards/batch{batch}"):
-        os.mkdir(f"cards/batch{batch}")
+    if not os.path.isdir(
+        CARD_MAKER_CONFIG["saved_card_folder"] + f"cards/batch{batch}"
+    ):
+        os.mkdir(
+            CARD_MAKER_CONFIG["saved_card_folder"] + f"cards/batch{batch}"
+        )
 
 
-def csv_reader(filename, batch):
+def csv_reader(batch):
     dataset = []
-    with open(filename, "r") as f:
+    with open(CARD_MAKER_CONFIG["source_file"], "r") as f:
         raw_data = csv.DictReader(f)
         for data in raw_data:
             dataset.append(data)
@@ -61,9 +75,3 @@ def csv_reader(filename, batch):
             "gender": record["Jenis Kelamin"],
         }
         card_creator(member, batch)
-
-
-if __name__ == "__main__":
-    filename = sys.argv[1]
-    batch = int(sys.argv[2])
-    csv_reader(filename, batch)
