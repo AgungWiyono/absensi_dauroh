@@ -21,4 +21,5 @@ class Test(Resource):
         data = request.get_json()
 
         status, code, msg = db_worker.insert_data(data)
+
         return {"msg": msg}, code
