@@ -62,9 +62,11 @@ def get_uninserted_data(conn):
 def update_status(conn, id_list):
     query = "UPDATE absensi SET inserted=1 WHERE id in (_?_)"
     query = query.replace("_?_", ", ".join(["?" for i in id_list]))
+    print(query)
 
     cursor = conn.cursor()
-    param = (id_list,) if len(id_list) == 1 else (id_list)
+    param = (id_list[0],) if len(id_list) == 1 else (id_list)
+    print(param)
 
     cursor.execute(query, param)
 
