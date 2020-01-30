@@ -1,0 +1,96 @@
+@media print {
+  * {
+    page-break-inside: avoid;
+    page-break-after: avoid;
+    page-break-before: avoid;
+  }
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	height: 700px;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+.card {
+	height: 330px;
+	width: 540px;
+	border-radius: 20px;
+	background: #da4453; /* fallback for old browsers */
+	background: linear-gradient(
+		to right,
+		#89216b,
+		#da4453
+	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background: linear-gradient(to right, #ce4eaa, #eb495a);
+}
+
+.teks {
+	text-align: left;
+	position: relative;
+	left: 35%;
+	top: 10%;
+	font-family: "Times New Roman", Times, serif;
+}
+.teks h4 {
+	font-size: 15px;
+	font-style: italic;
+}
+.teks h2 {
+	font-size: 30px;
+}
+.teks #ib {
+	margin-top: -10px;
+}
+
+.logo {
+	position: relative;
+	left: 13%;
+	top: -50px;
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
+}
+
+.logo > img{
+	width:100px;
+	height:100px;
+}
+
+.qrcode {
+	position: relative;
+	left: 12%;
+	top: -5%;
+	height: 110px;
+	width: 120px;
+	background: white;
+}
+.qrcode > img {
+	width: 120px;
+	height: 110px;
+}
+.garis {
+	position: relative;
+	top: -60px;
+	height: 28px;
+	width: 100%;
+	background: linear-gradient(to left, rgb(255, 230, 0), #f17d2f);
+}
+.bio {
+	position: relative;
+	left: 35%;
+	top: -110px;
+	color: white;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 25px;
+}
