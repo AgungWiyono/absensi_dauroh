@@ -1,7 +1,7 @@
-from flask import request
+from flask import request, render_template
 from flask_restplus import Resource, fields
 
-from api import api
+from api import app, api
 from api import db_worker
 
 input_model = api.model(
@@ -12,6 +12,21 @@ input_model = api.model(
         "email": fields.String(required=True, help="Alamat Email Peserta"),
     },
 )
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/scan')
+def scan():
+    return render_template('instascan.html')
+
+
+@app.route('/test-scan')
+def test_scan():
+    return render_template('test_scan.html')
 
 
 @api.route("/test")

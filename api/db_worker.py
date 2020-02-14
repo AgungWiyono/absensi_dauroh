@@ -37,11 +37,22 @@ def insert_data(conn, data):
             param,
         )
     except sqlite3.Error:
-        return False, 302, "Data has been inserted before"
+        return (
+            False,
+            302,
+            f"Peserta {data['name']} sudah pernah melakukan absen sebelumnya",
+        )
 
     if not cursor.rowcount:
-        return False, 400, "Insertion Failed"
-    return True, 200, "Success"
+        return False, 400, "Absensi Gagal. Hubungi administrator."
+    return (
+        True,
+        200,
+        (
+            f"Peserta {data['name']} dengan nomor {data['member_id']}",
+            "berhasil melakukan Absensi",
+        ),
+    )
 
 
 @connector

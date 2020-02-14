@@ -54,7 +54,16 @@ def path_checker(batch):
         )
 
 
+def make_simple(member, batch):
+    image = qrcode.make(f"{member['name']}|{member['kode']}|{member['email']}")
+    image.save(
+        CARD_MAKER_CONFIG["saved_card_folder"]
+        + f"cards/batch{batch}/{member['kode']}.png"
+    )
+
+
 def csv_reader(batch):
+    print(batch)
     dataset = []
     with open(CARD_MAKER_CONFIG["source_file"], "r") as f:
         raw_data = csv.DictReader(f)
@@ -63,8 +72,8 @@ def csv_reader(batch):
 
     path_checker(batch)
 
-    start = 100 * (batch - 1)
-    end = 100 * batch
+    start = 250 * (batch - 1)
+    end = 250 * batch
     sliced_data = dataset[start:end]
 
     for record in sliced_data:
@@ -74,4 +83,4 @@ def csv_reader(batch):
             "email": record["Email Address"],
             "gender": record["Jenis Kelamin"],
         }
-        card_creator(member, batch)
+        make_simple(member, batch)
